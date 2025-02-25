@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Form, Input, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, message, Button, Card, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Components/Spinner";
+import "bootstrap/dist/css/bootstrap.min.css"; // ✅ Ensure Bootstrap is imported
+
+const { Title, Text } = Typography;
 
 const Register = () => {
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const Register = () => {
     try {
       setLoading(true);
       await axios.post("http://localhost:8080/api/v1/users/register", values);
-      message.success("Registration Successful!");
+      message.success(" Registration Successful!");
       setLoading(false);
       navigate("/login");
     } catch (error) {
@@ -21,23 +24,36 @@ const Register = () => {
         "❌ Registration error:",
         error.response?.data || error.message
       );
-      message.error("invalid username or password");
+      message.error(
+        error.response?.data?.message || "Invalid registration details"
+      );
     }
   };
 
-  return (
-    <>
-      <div className="register-page">
-        {loading && <Spinner />}
-        <Form layout="vertical" onFinish={submitHandler}>
-          <h1>Register Form</h1>
+  // Prevent logged-in users from accessing the register page
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
+  return (
+    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="card shadow-lg p-4 rounded-4 w-50">
+        {loading && <Spinner />}
+
+        <h2 className="text-center text-primary">Financify</h2>
+        <p className="text-center text-muted">
+          Start tracking your finances easily!
+        </p>
+
+        <Form layout="vertical" onFinish={submitHandler} className="mt-3">
           <Form.Item
             label="Name"
             name="name"
             rules={[{ required: true, message: "Name is required!" }]}
           >
-            <Input />
+            <Input className="form-control" placeholder="Enter your name" />
           </Form.Item>
 
           <Form.Item
@@ -48,7 +64,7 @@ const Register = () => {
               { type: "email", message: "Enter a valid email!" },
             ]}
           >
-            <Input />
+            <Input className="form-control" placeholder="Enter your email" />
           </Form.Item>
 
           <Form.Item
@@ -56,18 +72,28 @@ const Register = () => {
             name="password"
             rules={[{ required: true, message: "Password is required!" }]}
           >
-            <Input type="password" />
+            <Input
+              type="password"
+              className="form-control"
+              placeholder="Enter a secure password"
+            />
           </Form.Item>
 
-          <div className="d-flex justify-between">
-            <Link to="/login">Have an Account? Login</Link>
-            <button className="btn btn-primary" type="submit">
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <Link to="/login" className="text-decoration-none">
+              Already have an account? Login
+            </Link>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="btn btn-primary"
+            >
               Register
-            </button>
+            </Button>
           </div>
         </Form>
       </div>
-    </>
+    </div>
   );
 };
 
