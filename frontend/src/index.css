@@ -87,3 +87,12 @@
   justify-content: center;
   height: 90vh;
 }
+
+/* transaction page */
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  box-shadow: 0 0 3px #9b9a9a;
+}

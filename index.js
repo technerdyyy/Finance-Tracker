@@ -23,6 +23,9 @@ app.use(cors());
 const userRoutes = require("./routes/userRoute");
 app.use("/api/v1/users", userRoutes);
 
+const transactionRoute = require("./routes/transactionRoutes");
+app.use("/api/v1/transactions", transactionRoute )
+
 app.get("*", (req, res) => {
     res.send("this is leftovers");
 })
