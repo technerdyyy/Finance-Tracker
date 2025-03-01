@@ -44,13 +44,19 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div className="position-relative vh-100 bg-light d-flex justify-content-center align-items-center">
+      <h1
+        className="position-absolute top-0 start-0 m-4 fw-bold text-primary"
+        style={{ fontSize: "2.5rem" }}
+      >
+        Financify
+      </h1>
+
       <div className="card shadow-lg p-4 rounded-4 w-50">
         {loading && <Spinner />}
 
-        <h2 className="text-center text-primary">Welcome Back</h2>
         <p className="text-center text-muted">
-          Login to continue tracking your finances
+          Start tracking your finances easily!
         </p>
 
         <Form layout="vertical" onFinish={submitHandler} className="mt-3">

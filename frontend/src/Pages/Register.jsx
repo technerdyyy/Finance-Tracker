@@ -38,11 +38,19 @@ const Register = () => {
   }, [navigate]);
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div className="position-relative vh-100 bg-light d-flex justify-content-center align-items-center">
+      {/* Financify Branding in Top Left Corner */}
+      <h1
+        className="position-absolute top-0 start-0 m-4 fw-bold text-primary"
+        style={{ fontSize: "2.5rem" }}
+      >
+        Financify
+      </h1>
+
+      {/* Registration Form Card */}
       <div className="card shadow-lg p-4 rounded-4 w-50">
         {loading && <Spinner />}
 
-        <h2 className="text-center text-primary">Financify</h2>
         <p className="text-center text-muted">
           Start tracking your finances easily!
         </p>
@@ -79,6 +87,7 @@ const Register = () => {
             />
           </Form.Item>
 
+          {/* Login Link and Register Button */}
           <div className="d-flex justify-content-between align-items-center mt-3">
             <Link to="/login" className="text-decoration-none">
               Already have an account? Login
@@ -86,7 +95,7 @@ const Register = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="btn btn-primary"
+              className="btn btn-primary rounded-3"
             >
               Register
             </Button>
