@@ -1,9 +1,24 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Progress } from "antd";
 
 //Total Transactions
 const Analytics = ({ allTransaction }) => {
+  //category
+  const categories = [
+    "salary",
+    "tip",
+    "project",
+    "food",
+    "medical",
+    "electricity",
+    "water",
+    "tax",
+    "Rent",
+    "miscellenous",
+    "other",
+  ];
   const totalTransactions = allTransaction.length;
   const totalIncomeTransactions = allTransaction.filter(
     (transaction) => transaction.type === "Income"
@@ -35,6 +50,7 @@ const Analytics = ({ allTransaction }) => {
     (totalExpenseTurnover / totalTurnover) * 100;
   return (
     <>
+      {/* Transactions */}
       <div className="row m-3">
         <div className="col-md-4">
           <div className="card">
@@ -66,7 +82,7 @@ const Analytics = ({ allTransaction }) => {
           </div>
         </div>
 
-        {/*  */}
+        {/* Turnover */}
         <div className="col-md-4">
           <div className="card">
             <div className="card-header">Total Turnover: {totalTurnover}</div>
@@ -89,6 +105,64 @@ const Analytics = ({ allTransaction }) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Category-wise Income */}
+      <div className="row mt-3">
+        <div className="col-md-4">
+          <h4>Category-wise Income</h4>
+          {categories.map((category) => {
+            const amount = allTransaction
+              .filter(
+                (transaction) =>
+                  transaction.type === "Income" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            return (
+              amount > 0 && (
+                <div className="card">
+                  <div className="card-body">
+                    <h5>{category}</h5>
+                    <Progress
+                      percent={((amount / totalIncomeTurnover) * 100).toFixed(
+                        0
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            );
+          })}
+        </div>
+
+        {/* Category-Wise Expense */}
+        <div className="col-md-4">
+          <h4>Category-wise Expense</h4>
+          {categories.map((category) => {
+            const amount = allTransaction
+              .filter(
+                (transaction) =>
+                  transaction.type === "Expense" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+            return (
+              amount > 0 && (
+                <div className="card">
+                  <div className="card-body">
+                    <h5>{category}</h5>
+                    <Progress
+                      percent={((amount / totalExpenseTurnover) * 100).toFixed(
+                        0
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            );
+          })}
         </div>
       </div>
     </>
