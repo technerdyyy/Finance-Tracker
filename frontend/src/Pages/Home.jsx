@@ -82,14 +82,36 @@ const Home = () => {
           }
         );
         setLoading(false);
-        setAllTransaction(res.data);
+        setAllTransaction(res.data); // Update state
       } catch (error) {
         console.log(error);
         message.error("Cannot Fetch Transactions");
       }
     };
     getAllTransactions();
-  }, [frequency, selectedDate, type]);
+  }, [frequency, selectedDate, type]); // Only fetch when filters change
+
+  //Fetch Transactions
+  const fetchTransactions = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      setLoading(true);
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/transactions/get-transaction",
+        {
+          userid: user._id,
+          frequency,
+          selectedDate,
+          type,
+        }
+      );
+      setLoading(false);
+      setAllTransaction(res.data);
+    } catch (error) {
+      console.log(error);
+      message.error("Cannot Fetch Transactions");
+    }
+  };
 
   // Delete Handler
   const handleDelete = async (record) => {
@@ -99,8 +121,8 @@ const Home = () => {
         "http://localhost:8080/api/v1/transactions/delete-transaction",
         { transactionId: record._id }
       );
-      setLoading(false);
       message.success("Transaction Deleted Successfully");
+      fetchTransactions(); // Fetch updated transactions
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -113,6 +135,7 @@ const Home = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
+
       if (editable) {
         await axios.post(
           "http://localhost:8080/api/v1/transactions/edit-transaction",
@@ -124,7 +147,6 @@ const Home = () => {
             transactionId: editable._id,
           }
         );
-        setLoading(false);
         message.success("Transaction updated successfully");
       } else {
         await axios.post(
@@ -134,11 +156,12 @@ const Home = () => {
             userid: user._id,
           }
         );
-        setLoading(false);
         message.success("Transaction added successfully");
       }
+
       setShowModal(false);
       setEditable(null);
+      fetchTransactions(); // Fetch updated transactions
     } catch (error) {
       setLoading(false);
       message.error("Failed to add transaction");

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 import "../../index.css";
 
 const Header = () => {
   const [loginUser, setLoginUser] = useState(null);
-  const navigate = useNavigate(); // ✅ Initialize navigate function
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -13,16 +13,16 @@ const Header = () => {
       try {
         setLoginUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error("❌ Error parsing user from localStorage:", error);
+        console.error(" Error parsing user from localStorage:", error);
       }
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // ✅ Remove user from storage
-    setLoginUser(null); // ✅ Clear state
+    localStorage.removeItem("user"); //  Remove user from storage
+    setLoginUser(null); //  Clear state
     message.success("Logged out successfully");
-    navigate("/login"); // ✅ Redirect to login page
+    navigate("/login"); //  Redirect to login page
   };
 
   return (
