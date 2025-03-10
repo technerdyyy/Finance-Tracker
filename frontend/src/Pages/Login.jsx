@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../index.css";
 import Spinner from "../Components/Spinner";
-import "bootstrap/dist/css/bootstrap.min.css"; // ✅ Ensure Bootstrap is imported
+import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const Login = () => {
         values
       );
       setLoading(false);
-      message.success(" Login successful!");
+      message.success("Login successful!");
 
       // Store user details (without password) in localStorage
       localStorage.setItem(
@@ -29,7 +29,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       setLoading(false);
-      console.error("❌ Login error:", error.response?.data || error.message);
+      console.error("Login error:", error.response?.data || error.message);
       message.error(
         error.response?.data?.message || "Invalid email or password"
       );
@@ -44,58 +44,64 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className="position-relative vh-100 bg-light d-flex justify-content-center align-items-center">
-      <h1
-        className="position-absolute top-0 start-0 m-4 fw-bold text-primary"
-        style={{ fontSize: "2.5rem" }}
-      >
+    <div className="container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+      {/* Title - Different Size for Mobile & Desktop */}
+      <h1 className="fw-bold text-primary mb-4 text-center fs-3 fs-lg-2">
         Financify
       </h1>
 
-      <div className="card shadow-lg p-4 rounded-4 w-50">
-        {loading && <Spinner />}
+      {/* Responsive Layout Using Bootstrap Grid */}
+      <div className="row justify-content-center w-100">
+        <div className="col-12 col-md-6 col-lg-4">
+          <div className="card shadow-lg p-4 rounded-4">
+            {loading && <Spinner />}
 
-        <p className="text-center text-muted">
-          Start tracking your finances easily!
-        </p>
+            <p className="text-center text-muted">
+              Start tracking your finances easily!
+            </p>
 
-        <Form layout="vertical" onFinish={submitHandler} className="mt-3">
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Email is required!" },
-              { type: "email", message: "Enter a valid email!" },
-            ]}
-          >
-            <Input className="form-control" placeholder="Enter your email" />
-          </Form.Item>
+            <Form layout="vertical" onFinish={submitHandler} className="mt-3">
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Email is required!" },
+                  { type: "email", message: "Enter a valid email!" },
+                ]}
+              >
+                <Input
+                  className="form-control"
+                  placeholder="Enter your email"
+                />
+              </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Password is required!" }]}
-          >
-            <Input
-              type="password"
-              className="form-control"
-              placeholder="Enter your password"
-            />
-          </Form.Item>
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: "Password is required!" }]}
+              >
+                <Input
+                  type="password"
+                  className="form-control"
+                  placeholder="Enter your password"
+                />
+              </Form.Item>
 
-          <div className="d-flex justify-content-between align-items-center mt-3">
-            <Link to="/register" className="text-decoration-none">
-              New here? Register
-            </Link>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="btn btn-primary"
-            >
-              Login
-            </Button>
+              <div className="d-flex justify-content-between align-items-center mt-3">
+                <Link to="/register" className="text-decoration-none">
+                  New here? Register
+                </Link>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="btn btn-primary"
+                >
+                  Login
+                </Button>
+              </div>
+            </Form>
           </div>
-        </Form>
+        </div>
       </div>
     </div>
   );
